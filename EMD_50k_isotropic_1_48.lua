@@ -14,7 +14,7 @@ light_r_ratio = tonumber(arg[4])
 dwarfMass  = tonumber(arg[5])
 light_mass_ratio = tonumber(arg[6])
 
-model1Bodies = 50000
+model1Bodies = 20000
 totalBodies = model1Bodies
 
 nbodyLikelihoodMethod = "EMD"
@@ -69,24 +69,6 @@ function makeBodies(ctx, potential)
       ignore      = IGNORE
   }
 
-  if (tonumber(light_mass_ratio) == 1.0) then
-      for i,v in ipairs(firstModel)
-      do
-	v.ignore = not IGNORE
-      end
-  else 
-      count = 0
-	print("about to run")
-	for i,v in ipairs(firstModel)
-	do
-	    if(count< 0.5*model1Bodies)
-	    then
-	      v.ignore=not IGNORE
-	      count = count + 1
-	    end
-      end     
-  end
-
   return firstModel
 end
 
@@ -95,12 +77,12 @@ function makeHistogram()
      phi = 128.79,
      theta = 54.39,
      psi = 90.70,
-     lambdaStart = -50,
-     lambdaEnd = 50,
+     lambdaStart = -100,
+     lambdaEnd = 100,
      lambdaBins = 50,
-     betaStart = -2,
-     betaEnd = 2,
-     betaBins = 1 
+     betaStart = -20,
+     betaEnd = 20,
+     betaBins = 1
 }
 end
 
