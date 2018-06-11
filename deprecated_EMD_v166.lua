@@ -1,7 +1,7 @@
--- /* Copyright (c) 2016 Siddhartha Shelton */
+-- /* Copyright (c) 2016 - 2018 Siddhartha Shelton */
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
--- Client side Lua file
+-- Client side Lua file. If using this compile with DNBODY_DEV_OPTIONS=OFF
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
                 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
@@ -23,13 +23,17 @@ lda_upper_range = 150     -- upepr range for lamdba
 bta_bins        = 1       -- number of beta bins. normally use 1 for 1D hist
 bta_lower_range = -15     -- lower range for beta
 bta_upper_range = 15      -- upper range for beta
+        
+SigmaCutoff          = 2.5     -- -- sigma cutoff for outlier rejection DO NOT CHANGE -- --
+Correction           = 1.111   -- -- correction for outlier rejection   DO NOT CHANGE -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 -- -- -- -- -- -- -- -- -- AlGORITHM OPTIONS -- -- -- -- -- -- -- --
 use_best_likelihood  = true    -- use the best likelihood return code
 best_like_start      = 0.98    -- what percent of sim to start
-use_vel_disps        = true    -- use velocity dispersions in likelihood
-        
+
+use_beta_disps       = true    -- use beta dispersions in likelihood
+use_vel_disps        = false   -- use velocity dispersions in likelihood
 
 -- -- -- -- -- -- -- -- -- DWARF STARTING LOCATION   -- -- -- -- -- -- -- --
 l  = 218
@@ -84,9 +88,14 @@ function makeContext()
       eps2        = calculateEps2(totalBodies, soften_length ),
       criterion   = "TreeCode",
       useQuad     = true,
-      useBestLike = use_best_likelihood,
-      useVelDisp  = use_vel_disps,
+      useBestLike   = use_best_likelihood,
       BestLikeStart = best_like_start,
+      useVelDisp    = use_vel_disps,
+      useBetaDisp   = use_beta_disps,
+      BetaSigma     = SigmaCutoff,
+      VelSigma      = SigmaCutoff,
+      BetaCorrect   = Correction,
+      VelCorrect    = Correction,
       theta       = 1.0
    }
 end
